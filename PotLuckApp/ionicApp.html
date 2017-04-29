@@ -2,11 +2,13 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>home</title>
+<title>PotLuck</title>
 <link href="jquery-mobile/jquery.mobile.theme-1.3.0.min.css" rel="stylesheet" type="text/css">
 <link href="jquery-mobile/jquery.mobile.structure-1.3.0.min.css" rel="stylesheet" type="text/css">
 <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
 <script src="jquery-mobile/jquery.mobile-1.3.0.min.js"></script>
+<script src="js/index.js"></script>
+<link rel="stylesheet" href="css/index.css">
 </head>
 
 <body>
@@ -15,13 +17,17 @@
     <h1>GimmsGiving</h1>
   </div>
   <div data-role="content">
-  	<h3>Dishes</h3>
-  	<input type="button" value="Add To-Do" onclick="createNewToDo()"/>
-        <input type="button" value="Remove Completed Tasks()" onclick="removeCompletedTasks()"/>
-    <br/><br/>
-    <table id="dataTable" width="100%" border="1">
+  	<h1>Dishes</h1>
+	<table id="dataTable" width="100%" border="0">
  
     </table>
+    
+  	<input type="button" value="Add Dish" onclick="createNewDish()"/>
+        
+    
+    
+ 
+    
   </div>
 </div>
 </body>

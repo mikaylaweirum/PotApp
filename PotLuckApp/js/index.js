@@ -50,23 +50,23 @@ var app = {
 };
 
     // create a new to-do
-function createNewToDo()
+function createNewDish()
 {
-    var todoDictionary = {};
+    var dishDictionary = {};
  
     // prompt the user to enter to-do
-    var todo = prompt("To-Do","");
-    if (todo != null)
+    var dish = prompt("Dish","");
+    if (dish != null)
     {
-        if (todo == "")
+        if (dish == "")
         {
-            alert("To-Do can't be empty!");
+            alert("Dish can't be empty!");
         }
         else
         {
             // append the new to-do with the table
-            todoDictionary = { check : 0 , text : todo}; //this is where we store local permamenet data
-            addTableRow(todoDictionary, false); //this is defined below
+            dishDictionary = { check : 0 , text : dish}; //this is where we store local permamenet data
+            addTableRow(dishDictionary, false); //this is defined below
         }
     }
  
@@ -75,53 +75,37 @@ function createNewToDo()
 
 //populate the table with new row
 var rowID = 0;
-function addTableRow(todoDictionary, appIsLoading)
+function addTableRow(dishDictionary, appIsLoading)
 {
     rowID +=1;
     var table = document.getElementById("dataTable");
     var rowCount = table.rows.length;
     var row = table.insertRow(rowCount);
  
-    // create the checkbox
-    var cell1 = row.insertCell(0);
-    var element1 = document.createElement("input");
-    element1.type = "checkbox";
-    element1.name = "chkbox[]";
-    element1.checked = todoDictionary["check"];
-    element1.setAttribute("onclick", "checkboxClicked()");
-    cell1.appendChild(element1);
  
     // create the textbox
-    var cell2 = row.insertCell(1);
-    var element2 = document.createElement("input");
-    element2.type = "text";
-    element2.name = "txtbox[]";
-    element2.size = 16;
-    element2.id = "text" + rowID;
-    element2.value = todoDictionary["text"];
-    element2.setAttribute("onchange", "saveToDoList()");
-    cell2.appendChild(element2);
+    var cell1 = row.insertCell(0);
+    var element1 = document.createElement("input");
+    element1.type = "text";
+    element1.name = "txtbox[]";
+    element1.size = 16;
+    element1.id = "text" + rowID;
+    element1.value = dishDictionary["text"];
+    element1.setAttribute("onchange", "saveDishList()");
+    cell1.appendChild(element1);
  
-    // create the view button
-    var cell3 = row.insertCell(2);
-    var element3 = document.createElement("input");
-    element3.type = "button";
-    element3.id = rowID;
-    element3.value = "View";
-    element3.setAttribute("onclick", "viewSelectedRow(document.getElementById('text' + this.id))");
-    cell3.appendChild(element3);
  
     // create the delete button
-    var cell4 = row.insertCell(3);
-    var element4 = document.createElement("input");
-    element4.type = "button";
-    element4.value = "Delete";
-    element4.setAttribute("onclick", "deleteSelectedRow(this)");
-    cell4.appendChild(element4);
+    var cell2 = row.insertCell(1);
+    var element2 = document.createElement("input");
+    element2.type = "button";
+    element2.value = "Delete";
+    element2.setAttribute("onclick", "deleteSelectedRow(this)");
+    cell2.appendChild(element2);
  
     // update the UI and save the to-do list
-    checkboxClicked();
-    saveToDoList();
+
+    saveDishList();
  
     //if (!appIsLoading) alert("Task Added Successfully.");
 }
@@ -156,19 +140,19 @@ function checkboxClicked()
     }
  
     // save the to-do list
-    saveToDoList();
+    saveDishList();
 }
 // view the content of the selected row
-function viewSelectedRow(todoTextField)
+function viewSelectedRow(dishTextField)
 {
-    alert(todoTextField.value);
+    alert(dishTextField.value);
 }
 // delete the selected row
 function deleteSelectedRow(deleteButton)
 {
     var p = deleteButton.parentNode.parentNode;
     p.parentNode.removeChild(p);
-    saveToDoList();
+    saveDishList();
 }
 
 // remove completed tasks
@@ -192,15 +176,15 @@ function removeCompletedTasks()
     }
  
     // save the to-do list
-    saveToDoList();
+    saveDishList();
  
     alert("Completed Tasks Were Removed Successfully.");
 }
 
 // save the to-do list
-function saveToDoList()
+function saveDishList()
 {
-    var todoArray = {};
+    var dishArray = {};
     var checkBoxState = 0;
     var textValue = "";
  
@@ -230,7 +214,7 @@ function saveToDoList()
             textValue = textbox.value;
  
             // populate the array with checkbox state and text value
-            todoArray["row" + i] =
+            dishArray["row" + i] =
             {
                 check : checkBoxState, //this formate is nescessary because we are going to turn it into a json key value pair
                 text : textValue
@@ -239,18 +223,18 @@ function saveToDoList()
     }
     else
     {
-        todoArray = null;
+        dishArray = null;
     }
  
     // use the local storage API to persist the data as JSON, hence the storage format
-    window.localStorage.setItem("todoList", JSON.stringify(todoArray)); //the function to save data locally, to the phone.  Takes json object format.
+    window.localStorage.setItem("dishList", JSON.stringify(dishArray)); //the function to save data locally, to the phone.  Takes json object format.
 }
 
 // load the to-do list
-function loadToDoList()
+function loadDishList()
 {
     // use the local storage API load the JSON formatted to-do list, and decode it
-    var theList = JSON.parse(window.localStorage.getItem("todoList"));
+    var theList = JSON.parse(window.localStorage.getItem("dishList"));
  
     if (null == theList || theList == "null")
     {
@@ -292,7 +276,7 @@ function deleteAllRows()
     }
  
     // save the to-do list
-    saveToDoList();
+    saveDishList();
 }
 
 
