@@ -7,8 +7,75 @@
 <link href="jquery-mobile/jquery.mobile.structure-1.3.0.min.css" rel="stylesheet" type="text/css">
 <script src="jquery-mobile/jquery-1.11.1.min.js"></script>
 <script src="jquery-mobile/jquery.mobile-1.3.0.min.js"></script>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.48.0.min.js"></script>
+<script src="database-connection.js"></script>
 <script src="js/index.js"></script>
 <link rel="stylesheet" href="css/index.css">
+
+<script>
+AWS.config.update({
+  region: "us-west-2"
+});
+
+var docClient = new AWS.DynamoDB.DocumentClient();
+
+function createItem() {
+	var iteminput = document.getElementById('textarea').value;
+	
+	var startID = 1;
+	
+	var canbreak = false;
+	
+	while(!canbreak){
+	
+		var params = {
+			TableName :"potluckdb",
+			Item:{
+				"id": startID,
+				"item": iteminput
+				}
+		};
+		
+		var key = { "id": startID};
+		params.Key = key;
+		
+		
+		docClient.get(params, function(err, data) {
+			
+			console.log(data);
+			if (err)
+				{
+					 document.getElementById('errortextarea').innerHTML = "Unable to add item: " + "\n" + JSON.stringify(err, undefined, 2);
+					canbreak = true;
+				}
+			
+			else if (data == null)
+				{
+					console.log("data is null");
+					canbreak = true;
+				}
+			else (data != null)
+				{
+					console.log("data is not null");
+					startID ++;
+				}
+		})
+		
+	}
+	
+	
+    
+    docClient.put(params, function(err, data) {
+        if (err) {
+            document.getElementById('textarea').innerHTML = "Unable to add item: " + "\n" + JSON.stringify(err, undefined, 2);
+        } else {
+            document.getElementById('textarea').innerHTML = "PutItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2);
+        }
+    });
+};
+
+</script>
+
 </head>
 
 <body>
@@ -23,10 +90,13 @@
     </table>
     
   	<input type="button" value="Add Dish" onclick="createNewDish()"/>
-        
-    
-    
- 
+       
+       
+       <input id="createItem" type="button" value="Create Item" onclick="createItem();" />
+	   <br><br>
+	   <textarea id= "textarea" style="width:800px; height:100px"></textarea>
+        <br><br>
+        <textarea id= "errortextarea" style="width:800px; height:100px"></textarea>
     
   </div>
 </div>
