@@ -24,16 +24,16 @@ body {
     -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#a9a86e;
-    background-image:linear-gradient(top, #a9a86e 0%, #818054 51%);
-    background-image:-webkit-linear-gradient(top, #a9a86e 0%, #818054 51%);
-    background-image:-ms-linear-gradient(top, #a9a86e 0%, #818054 51%);
+    background-color:#ea1410;
+    background-image:linear-gradient(top, #ea1410 0%, #d1100e 51%);
+    background-image:-webkit-linear-gradient(top, #ea1410 0%, #d1100e 51%);
+    background-image:-ms-linear-gradient(top, #ea1410 0%, #d1100e 51%);
     background-image:-webkit-gradient(
         linear,
         left top,
         left bottom,
-        color-stop(0, #a9a86e),
-        color-stop(0.51, #818054)
+        color-stop(0, #ea1410),
+        color-stop(0.51, #d1100e)
     );
     background-attachment:fixed;
     font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
@@ -69,8 +69,16 @@ input{
     top: 75%; bottom:0; left: 0; right:0;
     margin: auto;
 }
-#textarea{
+#itemOutput{
 	border-radius: 10%;
+	position: absolute;
+    top: 40%; bottom:0; left: 5%; right:0;
+    margin: auto;
+	height: 100%;
+	width:90%;
+}
+#textarea{
+	;
 	position: absolute;
     top: 90%; bottom:0; left: 0; right:0;
     margin: auto;
@@ -79,6 +87,8 @@ input{
 	
 	
 }
+
+
 /* Landscape layout (with min-width) */
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
     .app {

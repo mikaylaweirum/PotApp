@@ -21,12 +21,15 @@ AWS.config.update({
 
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 IdentityPoolId: "us-west-2:8b965424-ffce-4354-b7f6-eefa9ca14804",
-RoleArn: "arn:aws:dynamodb:us-west-2:726359160323:table/potluckdb"
+RoleArn: "arn:aws:iam::726359160323:role/Cognito_potluckpoolUnauth_Role"
 });
+
 
 
 var dynamodb = new AWS.DynamoDB();
 var docClient = new AWS.DynamoDB.DocumentClient();
+
+readItem(1);
 
 function readItem(index) {
     var table = "potluckdb";
@@ -48,66 +51,16 @@ function readItem(index) {
 	var key = { "id": index };
 	params.Key = key;
 	
-    docClient.get(params, function(err, data) {
-        if (err) {
-            document.getElementById('textarea').innerHTML = "Unable to read item: " + "\n" + JSON.stringify(err, undefined, 2);
-        } else {
-            //document.getElementById('textarea').innerHTML = "GetItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2);
-			/*var s = JSON.stringify(data, undefined, 2);
-			var j = JSON.parse(s);
-			var theKey = 'Latitude';
-			retrievedLatitude = data.Longitude;
-			retrievedLongitude = data.Latitude;*/
-			jsonString = JSON.stringify(data, undefined, 2);
-			
-			jsonArray[index - 2] = jsonString;
-			//console.log(jsonArray[index - 2]);
-			//myMap();
-			//console.log(jsonString);
-        }
-    });
-	
-}
-
-function queryItemCount() {
-    var table = "potluckdb";
-	var id;
-	var food;
-	var drinks;
-	var misc;
-	
-    var params = {
-        TableName: table,
-        Key:{
-            "id": id,
-			"food": food,
-			"drinks": drinks,
-			"misc": misc
-        }
-    };
-	
-	var key = { "id": 1 };
-	params.Key = key;
-	
-	var countString;
+	console.log(docClient);
 	
     docClient.get(params, function(err, data) {
         if (err) {
             document.getElementById('textarea').innerHTML = "Unable to read item: " + "\n" + JSON.stringify(err, undefined, 2);
         } else {
-			console.log(data.id);
-            //document.getElementById('textarea').innerHTML = "GetItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2);
-			/*var s = JSON.stringify(data, undefined, 2);
-			var j = JSON.parse(s);
-			var theKey = 'Latitude';
-			retrievedLatitude = data.Longitude;
-			retrievedLongitude = data.Latitude;*/
-			tableLengthString = JSON.stringify(data, undefined, 2);
-
-			//myMap();
-			//console.log(jsonString);
+            console.log(data.Item.misc);
         }
     });
+	
 }
 
 function GetDBString() {

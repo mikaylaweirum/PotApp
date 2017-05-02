@@ -19,48 +19,41 @@
 -->
 <html>
     <head>
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, see:
-            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
-        Some notes:
-            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-                * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <script src="https://sdk.amazonaws.com/js/aws-sdk-2.48.0.min.js"></script>
+		<script src="js/database-connection.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="cordova.js"></script>
+		<link rel="stylesheet" href="css/index.css">
 
         <title>Hello World</title>
     </head>
     <script>
-AWS.config.update({
-  region: "us-west-2"
-});
+		AWS.config.update({
+  		region: "us-west-2"
+		});
 
-var docClient = new AWS.DynamoDB.DocumentClient();
-
-function createItem() {
-	var iteminput = document.getElementById('textarea').value;
+		var docClient = new AWS.DynamoDB.DocumentClient();
 	
-	var startID = 1;
+		var dataArray = [];
+    	function getItem() {
 	
-	var canbreak = false;
+		var iteminput = document.getElementById('textarea').value;
 	
-	while(!canbreak){
+		for(var i = 1; i < 6; i++){
 	
 		var params = {
 			TableName :"potluckdb",
 			Item:{
-				"id": startID,
+				"id": i,
 				"item": iteminput
 				}
 		};
 		
-		var key = { "id": startID};
+		var key = { "id": i};
 		params.Key = key;
 		
 		
@@ -70,36 +63,20 @@ function createItem() {
 			if (err)
 				{
 					 document.getElementById('errortextarea').innerHTML = "Unable to add item: " + "\n" + JSON.stringify(err, undefined, 2);
-					canbreak = true;
 				}
-			
-			else if (data == null)
+			else 
 				{
-					console.log("data is null");
-					canbreak = true;
-				}
-			else (data != null)
-				{
-					console.log("data is not null");
-					startID ++;
+					//console.log(data.Item.item);
+					dataArray.push(data.Item.item);
+					console.log(dataArray.length);
+					document.getElementById('itemlist').innerHTML = dataArray[0] + "\n" + dataArray[1] + "\n" + dataArray[2] + "\n" + dataArray[3] + "\n" + dataArray[4];
 				}
 		})
-		
 	}
-	
-	
-    
-    docClient.put(params, function(err, data) {
-        if (err) {
-            document.getElementById('textarea').innerHTML = "Unable to add item: " + "\n" + JSON.stringify(err, undefined, 2);
-        } else {
-            document.getElementById('textarea').innerHTML = "PutItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2);
-        }
-    });
-};
+};	
 
 </script>
-    <body>
+    <body onload="getItem()">
         <div class="app">
             
             <div id="deviceready" class="blink">
@@ -108,15 +85,18 @@ function createItem() {
         </div>
         <div class="buttons">
         <input type="image" src="img/AddButton.png" value="Add Dish" onclick="createItem()"/>
+        
     
         <table id="dataTable" width="100%" border="0"></table>
-        
+        <div class="itemList" id="itemOutput">
+        <textarea readonly id= "itemlist" style="width:90%; height:50%"></textarea>
+        </div>
         </div>
         <div class="inputBox">
-        <textarea  id= "textarea" style="width:90% height:10%"></textarea>	
+        <textarea readonly id= "textarea" style="width:90%; height:5%"></textarea>
         </div>
         
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
+        
+        
     </body>
 </html>
