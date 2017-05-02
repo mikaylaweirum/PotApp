@@ -18,8 +18,10 @@ AWS.config.update({
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
+	
+var dataArray = [];
 
-function createItem() {
+/*function createItem() {
 	var iteminput = document.getElementById('textarea').value;
 	
 	var startID = 1;
@@ -72,7 +74,43 @@ function createItem() {
             document.getElementById('textarea').innerHTML = "PutItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2);
         }
     });
-};
+};*/
+	
+function getItem() {
+	
+	var iteminput = document.getElementById('textarea').value;
+	
+	for(var i = 1; i < 6; i++){
+	
+		var params = {
+			TableName :"potluckdb",
+			Item:{
+				"id": i,
+				"item": iteminput
+				}
+		};
+		
+		var key = { "id": i};
+		params.Key = key;
+		
+		
+		docClient.get(params, function(err, data) {
+			
+			console.log(data);
+			if (err)
+				{
+					 document.getElementById('errortextarea').innerHTML = "Unable to add item: " + "\n" + JSON.stringify(err, undefined, 2);
+				}
+			else 
+				{
+					//console.log(data.Item.item);
+					dataArray.push(data.Item.item);
+					console.log(dataArray.length);
+					document.getElementById('textarea').innerHTML = dataArray[0] + "\n" + dataArray[1] + "\n" + dataArray[2] + "\n" + dataArray[3] + "\n" + dataArray[4];
+				}
+		})
+	}
+};	
 
 </script>
 
@@ -92,11 +130,9 @@ function createItem() {
   	<input type="button" value="Add Dish" onclick="createNewDish()"/>
        
        
-       <input id="createItem" type="button" value="Create Item" onclick="createItem();" />
+       <input id="getItem" type="button" value="Get Item" onclick="getItem();" />
 	   <br><br>
-	   <textarea id= "textarea" style="width:800px; height:100px"></textarea>
-        <br><br>
-        <textarea id= "errortextarea" style="width:800px; height:100px"></textarea>
+	   <textarea readonly id= "textarea" style="width:800px; height:100px"></textarea>
     
   </div>
 </div>
