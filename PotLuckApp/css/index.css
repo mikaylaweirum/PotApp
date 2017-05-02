@@ -43,6 +43,7 @@ body {
     text-transform:uppercase;
     width:100%;
 }
+
 canvas {
             position: fixed;
             top: 55px;
@@ -50,6 +51,7 @@ canvas {
             padding: 0;
             margin: 0;
         }
+
 
 /* Portrait layout (default) */
 .app {
@@ -74,6 +76,9 @@ canvas {
                                       /* offset horizontal: half of image width and text area width */
     }
 }
+div.ui-header.ui-bar-a{
+	background-color:#B46465;
+}
 
 h1 {
     font-size:28px;
@@ -83,22 +88,7 @@ h1 {
     padding:0px;
     text-align:center;
 }
-button {
-            background-color: transparent;
-            border: 0;
-            font-size: 2em;
-            float: right;
-            width: 50px;
-            text-align: left;
-        }
 
-        #playButton {
-            display: block;
-        }
-
-        #pauseButton {
-            display: none;
-        }
 
 .event {
     border-radius:4px;
