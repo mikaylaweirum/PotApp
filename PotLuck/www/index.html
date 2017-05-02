@@ -36,6 +36,69 @@
 
         <title>Hello World</title>
     </head>
+    <script>
+AWS.config.update({
+  region: "us-west-2"
+});
+
+var docClient = new AWS.DynamoDB.DocumentClient();
+
+function createItem() {
+	var iteminput = document.getElementById('textarea').value;
+	
+	var startID = 1;
+	
+	var canbreak = false;
+	
+	while(!canbreak){
+	
+		var params = {
+			TableName :"potluckdb",
+			Item:{
+				"id": startID,
+				"item": iteminput
+				}
+		};
+		
+		var key = { "id": startID};
+		params.Key = key;
+		
+		
+		docClient.get(params, function(err, data) {
+			
+			console.log(data);
+			if (err)
+				{
+					 document.getElementById('errortextarea').innerHTML = "Unable to add item: " + "\n" + JSON.stringify(err, undefined, 2);
+					canbreak = true;
+				}
+			
+			else if (data == null)
+				{
+					console.log("data is null");
+					canbreak = true;
+				}
+			else (data != null)
+				{
+					console.log("data is not null");
+					startID ++;
+				}
+		})
+		
+	}
+	
+	
+    
+    docClient.put(params, function(err, data) {
+        if (err) {
+            document.getElementById('textarea').innerHTML = "Unable to add item: " + "\n" + JSON.stringify(err, undefined, 2);
+        } else {
+            document.getElementById('textarea').innerHTML = "PutItem succeeded: " + "\n" + JSON.stringify(data, undefined, 2);
+        }
+    });
+};
+
+</script>
     <body>
         <div class="app">
             
@@ -44,7 +107,13 @@
             </div>
         </div>
         <div class="buttons">
-        <input type="image" src="img/AddButton.png" value="Add Dish" onclick="createNewDish()"/>
+        <input type="image" src="img/AddButton.png" value="Add Dish" onclick="createItem()"/>
+    
+        <table id="dataTable" width="100%" border="0"></table>
+        
+        </div>
+        <div class="inputBox">
+        <textarea  id= "textarea" style="width:90% height:10%"></textarea>	
         </div>
         
         <script type="text/javascript" src="cordova.js"></script>

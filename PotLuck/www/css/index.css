@@ -54,18 +54,31 @@ body {
 	
     height:50px;                   /* text area height */
     width:300px;                   /* text area width */
-    text-align:center;
-     /* image height is 200px (bottom 20px are overlapped with text) */
-	padding:auto;
-    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
+    position: absolute;
+    top: 0; bottom:90%; left: 0; right:0;
+    margin: auto;  /* offset vertical: half of image height and text area height */
                                    /* offset horizontal: half of text area width */
 }
 .buttons{
-	position:absolute;             /* position in the center of the screen */
-    left:28%;
-    bottom:5%;
+	position: absolute;
+    top: 0; bottom:0; left: 0; right:0;
+    margin: auto;
 }
-
+input{
+	position: absolute;
+    top: 75%; bottom:0; left: 0; right:0;
+    margin: auto;
+}
+#textarea{
+	border-radius: 10%;
+	position: absolute;
+    top: 90%; bottom:0; left: 0; right:0;
+    margin: auto;
+	height: 25px;
+	width:250px;
+	
+	
+}
 /* Landscape layout (with min-width) */
 @media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
     .app {
