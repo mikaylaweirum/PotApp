@@ -37,6 +37,54 @@
 		});
 
 		var docClient = new AWS.DynamoDB.DocumentClient();
+		var dynamodb = new AWS.DynamoDB();
+		var dbCount;
+		
+function getItemCount() {
+	var params = {
+  		TableName: "potluckdb"
+ 	};
+	
+ 	dynamodb.describeTable(params, function(err, data) {
+    if (err) {
+	   console.log(err, err.stack); // an error occurred
+    } 
+	 
+    else {
+	   console.log(data.Table.ItemCount);
+	   dbCount = data.Table.ItemCount;
+    }          // successful response
+  
+    });
+}
+		
+function createItem(){
+	
+	var iteminput = document.getElementById('textarea').value;
+	
+	var params = {
+		TableName : "potluckdb",
+		"id": (dbCount + 1),
+		"item": iteminput
+	}
+	
+	var key = { "id": dbCount + 1};
+	params.Key = key;
+	
+	docClient.put(params, function(err, data){
+		
+		if (err) {
+			console.log(err, err.stack);
+		}
+
+		else {
+
+		}
+		
+	});
+}
+
+		
 	
 		var dataArray = [];
     	function getItem() {
@@ -93,7 +141,7 @@
         </div>
         </div>
         <div class="inputBox">
-        <textarea readonly id= "textarea" style="width:90%; height:5%"></textarea>
+        <textarea id= "textarea" style="width:90%; height:5%"></textarea>
         </div>
         
         
