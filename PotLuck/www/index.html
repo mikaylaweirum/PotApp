@@ -51,8 +51,9 @@ function getItemCount() {
     } 
 	 
     else {
-	   console.log(data.Table.ItemCount);
+	   console.log(" data.Table.ItemCount = " + data.Table.ItemCount);
 	   dbCount = data.Table.ItemCount;
+		getItem();
     }          // successful response
   
     });
@@ -64,8 +65,10 @@ function createItem(){
 	
 	var params = {
 		TableName : "potluckdb",
-		"id": (dbCount + 1),
+		Item :{
+		"id": dbCount + 1,
 		"item": iteminput
+		}
 	}
 	
 	var key = { "id": dbCount + 1};
@@ -74,7 +77,7 @@ function createItem(){
 	docClient.put(params, function(err, data){
 		
 		if (err) {
-			console.log(err, err.stack);
+			console.log( "Unable to add item: " + "\n" + JSON.stringify(err, undefined, 2))
 		}
 
 		else {
@@ -85,13 +88,15 @@ function createItem(){
 }
 
 		
-	
-		var dataArray = [];
-    	function getItem() {
+function getItem() {
+			
+		
 	
 		var iteminput = document.getElementById('textarea').value;
 	
-		for(var i = 1; i < 6; i++){
+		console.log("dbcount: " + dbCount);
+	
+		for(var i = 1; i < dbCount + 1; i++){
 	
 		var params = {
 			TableName :"potluckdb",
@@ -104,6 +109,7 @@ function createItem(){
 		var key = { "id": i};
 		params.Key = key;
 		
+		var dataArray = [];
 		
 		docClient.get(params, function(err, data) {
 			
@@ -124,7 +130,7 @@ function createItem(){
 };	
 
 </script>
-    <body onload="getItem()">
+    <body onload="getItemCount()">
         <div class="app">
             
             <div id="deviceready" class="blink">

@@ -51,13 +51,11 @@ function readItem(index) {
 	var key = { "id": index };
 	params.Key = key;
 	
-	console.log(docClient);
 	
     docClient.get(params, function(err, data) {
         if (err) {
             document.getElementById('textarea').innerHTML = "Unable to read item: " + "\n" + JSON.stringify(err, undefined, 2);
         } else {
-            console.log(data.Item.misc);
         }
     });
 	
